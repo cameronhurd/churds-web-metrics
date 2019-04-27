@@ -11,8 +11,8 @@ import java.io.PrintWriter;
 
 public class ResponseWrapper extends HttpServletResponseWrapper {
 
-    final ByteArrayOutputStream _byteArrayOutputStream;
-    final PrintWriter _printWriter;
+    private final ByteArrayOutputStream _byteArrayOutputStream;
+    private final PrintWriter _printWriter;
 
     public ResponseWrapper(HttpServletResponse response) {
         super(response);

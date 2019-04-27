@@ -22,11 +22,15 @@ public class WebMetricsServletFilter implements Filter {
 
     private static final String METRICS_ID = "metrics-id";
 
+    private AllMetrics _allMetrics;
+
     // https://www.baeldung.com/spring-servletcomponentscan
     // TODO: use webListerner annotation too? or instead?
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        _log.info("Init web filter");
+        _allMetrics = new AllMetrics();
     }
 
     @Override
@@ -52,6 +56,9 @@ public class WebMetricsServletFilter implements Filter {
             long requestTime = System.nanoTime() - startNanos;
             WebMetric metric = new WebMetric(metricsId, responseByteLength, requestTime);
             _log.info("Request end - metrics: {}", metric);
+
+            _allMetrics.addMetric(metric);
+            _log.info("Metric update: {}", _allMetrics);
         }
         else {
             filterChain.doFilter(request, response);
