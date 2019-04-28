@@ -7,21 +7,26 @@ public class AggregateMetric {
     private long _count = 0;
     private long _totalNanos = 0;
 
-    public long getAverage() {
-        return _average;
-    }
-
-    public void applyMetricValue(long value) {
-        _count++;
-        _totalNanos += value;
+    public void applyMetricValue(Long oldValue, long newValue) {
+        if (null == oldValue) {
+            _count++;
+            _totalNanos += newValue;
+        }
+        else {
+            _totalNanos += newValue - oldValue;
+        }
         _average = _totalNanos / _count;
 
-        if (null == _max || value > _max) {
-            _max = value;
+        if (null == _max || newValue > _max) {
+            _max = newValue;
         }
-        if (null == _min || value < _min) {
-            _min = value;
+        if (null == _min || newValue < _min) {
+            _min = newValue;
         }
+    }
+
+    public long getAverage() {
+        return _average;
     }
 
     public void setAverage(long average) {

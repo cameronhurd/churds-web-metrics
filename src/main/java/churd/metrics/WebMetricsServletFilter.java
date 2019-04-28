@@ -20,17 +20,14 @@ public class WebMetricsServletFilter implements Filter {
 
     private static final Logger _log = LogManager.getLogger(WebMetricsServletFilter.class);
 
-    private static final String METRICS_ID = "metrics-id";
+    private static final String METRICS_ID = "churds-metrics-id";
 
-    private AllMetrics _allMetrics;
-
-    // https://www.baeldung.com/spring-servletcomponentscan
-    // TODO: use webListerner annotation too? or instead?
+    private MetricsService _metricsService;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         _log.info("Init web filter");
-        _allMetrics = new AllMetrics();
+        _metricsService = new InMemoryMetricsService();
     }
 
     @Override
@@ -39,26 +36,18 @@ public class WebMetricsServletFilter implements Filter {
 
         _log.info("Request start");
         if (response instanceof HttpServletResponse) {
-            long startNanos = System.nanoTime();
-            ResponseWrapper responseWrapper = new ResponseWrapper((HttpServletResponse) response);
+            WebMetric metric = new WebMetric(UUID.randomUUID().toString());
+            metric.startTimer();
+            ResponseWrapper responseWrapper = new ResponseWrapper((HttpServletResponse) response, _metricsService, metric);
 
-            String metricsId = UUID.randomUUID().toString();
-            responseWrapper.addHeader(METRICS_ID, metricsId);
-            _log.info("doFilter requst - metrics-id: {}", metricsId);
-            ServletContextEvent event;
+            responseWrapper.addHeader(METRICS_ID, metric.getId());
+            _log.info("doFilter requst - metrics-id: {}", metric.getId());
 
             _log.info("call doFilter");
             filterChain.doFilter(request, responseWrapper);
 
-            byte[] bytes = responseWrapper.getByteArrayOutputStream().toByteArray();
-            response.getOutputStream().write(bytes);
-            int responseByteLength = null == bytes ? 0 : bytes.length;
-            long requestTime = System.nanoTime() - startNanos;
-            WebMetric metric = new WebMetric(metricsId, responseByteLength, requestTime);
-            _log.info("Request end - metrics: {}", metric);
-
-            _allMetrics.addMetric(metric);
-            _log.info("Metric update: {}", _allMetrics);
+            metric.endTimer();
+            _metricsService.updateMetric(metric);
         }
         else {
             filterChain.doFilter(request, response);
