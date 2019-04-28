@@ -7,4 +7,6 @@ public interface MetricsService {
     AggregateMetric getAggregateResponseTimeNanos();
 
     AggregateMetric getAggregateResponseSizeBytes();
+
+    WebMetric getWebMetricById(String id);
 }

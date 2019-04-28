@@ -31,6 +31,11 @@ public class InMemoryMetricsService implements MetricsService {
     }
 
     @Override
+    public WebMetric getWebMetricById(String id) {
+        return _metrics.get(id);
+    }
+
+    @Override
     public synchronized void updateMetric(WebMetric metric) {
         WebMetric old = _metrics.get(metric.getId());
         Long oldRequestTimeNanos = null == old ? null : old.getRequestTimeNanos();
