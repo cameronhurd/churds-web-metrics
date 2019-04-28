@@ -5,6 +5,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 
+/**
+ * In memory implementation of MetricsService
+ */
 public class InMemoryMetricsService implements MetricsService {
 
     private static final Logger _log = LogManager.getLogger(InMemoryMetricsService.class);

@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * HTTP servlet response wrapper that counts response output stream bytes and reports to MetricsService
+ */
 public class ResponseWrapper extends HttpServletResponseWrapper {
 
     private PrintWriter _printWriter;
@@ -22,6 +25,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
         _webMetric = webMetric;
     }
 
+    @Override
     public ServletOutputStream getOutputStream() throws IOException {
         if (null != _servletOutputStream) {
             return _servletOutputStream;
@@ -44,6 +48,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
         return _servletOutputStream;
     }
 
+    @Override
     public PrintWriter getWriter() throws IOException {
         if (null != _printWriter) {
             return _printWriter;

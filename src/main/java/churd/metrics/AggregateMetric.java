@@ -1,5 +1,8 @@
 package churd.metrics;
 
+/**
+ * Tracks aggregate metrics like min, max, average.
+ */
 public class AggregateMetric {
     private Long _average;
     private Long _min;
@@ -7,6 +10,12 @@ public class AggregateMetric {
     private long _count = 0;
     private long _totalNanos = 0;
 
+    /**
+     * Apply a metric value update to the current aggregate figures
+     *
+     * @param oldValue
+     * @param newValue
+     */
     public void applyMetricValue(Long oldValue, Long newValue) {
         if (null == newValue) {
             return;

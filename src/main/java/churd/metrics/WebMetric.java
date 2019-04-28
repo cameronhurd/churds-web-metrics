@@ -1,5 +1,8 @@
 package churd.metrics;
 
+/**
+ * Tracks metrics for a HTTP request/response
+ */
 public class WebMetric {
     private final String _id;
     private Long _responseByteCount;
