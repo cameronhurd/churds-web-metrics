@@ -12,8 +12,6 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 
     private PrintWriter _printWriter;
     private CountingOutputStream _countingOutputStream;
-    private boolean _getOutputStreamCalled;
-    private boolean _getWriterCalled;
     private ServletOutputStream _servletOutputStream;
     private MetricsService _metricsService;
     private WebMetric _webMetric;
@@ -25,15 +23,10 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
     }
 
     public ServletOutputStream getOutputStream() throws IOException {
-        if (_getWriterCalled) {
-            throw new IllegalStateException("getWriter already called");
-        }
-
         if (null != _servletOutputStream) {
             return _servletOutputStream;
         }
 
-        _getOutputStreamCalled = true;
         _countingOutputStream = new CountingOutputStream(super.getOutputStream());
         _servletOutputStream = new ServletOutputStream() {
             @Override
@@ -55,10 +48,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
         if (null != _printWriter) {
             return _printWriter;
         }
-        if (_getOutputStreamCalled) {
-            throw new IllegalStateException("getOutputStream already called");
-        }
-        _getWriterCalled = true;
+
         _printWriter = new PrintWriter(getOutputStream());
         return _printWriter;
     }

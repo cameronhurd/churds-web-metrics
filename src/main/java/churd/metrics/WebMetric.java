@@ -2,9 +2,9 @@ package churd.metrics;
 
 public class WebMetric {
     private final String _id;
-    private long _responseByteCount;
-    private long _requestTimeNanos;
-    private long _startTimeNanos;
+    private Long _responseByteCount;
+    private Long _requestTimeNanos;
+    private Long _startTimeNanos;
 
     public WebMetric(String id) {
         _id = id;
@@ -17,7 +17,7 @@ public class WebMetric {
         _startTimeNanos = metric.getStartTimeNanos();
     }
 
-    public long getStartTimeNanos() {
+    public Long getStartTimeNanos() {
         return _startTimeNanos;
     }
 
@@ -25,15 +25,15 @@ public class WebMetric {
         return _id;
     }
 
-    public long getResponseByteCount() {
+    public Long getResponseByteCount() {
         return _responseByteCount;
     }
 
-    public long getRequestTimeNanos() {
+    public Long getRequestTimeNanos() {
         return _requestTimeNanos;
     }
 
-    public void setResponseByteCount(long responseByteCount) {
+    public void setResponseByteCount(Long responseByteCount) {
         _responseByteCount = responseByteCount;
     }
 

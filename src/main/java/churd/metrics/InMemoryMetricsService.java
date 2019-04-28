@@ -9,17 +9,28 @@ public class InMemoryMetricsService implements MetricsService {
 
     private static final Logger _log = LogManager.getLogger(InMemoryMetricsService.class);
 
-    private final HashMap<String, WebMetric> _metrics;
-    private final AggregateMetric _aggregateResponseTimeNanos;
-    private final AggregateMetric _aggregateResponseSizeBytes;
+    private static MetricsService _instance;
 
-    public InMemoryMetricsService() {
-        _metrics = new HashMap<>();
+    private HashMap<String, WebMetric> _metrics;
+    private AggregateMetric _aggregateResponseTimeNanos;
+    private AggregateMetric _aggregateResponseSizeBytes;
 
-        _aggregateResponseSizeBytes = new AggregateMetric();
-        _aggregateResponseTimeNanos = new AggregateMetric();
+    private InMemoryMetricsService() {
     }
 
+    public static MetricsService getInstance() {
+        if (null == _instance) {
+            InMemoryMetricsService instance = new InMemoryMetricsService();
+            instance._metrics = new HashMap<>();
+            instance._aggregateResponseSizeBytes = new AggregateMetric();
+            instance._aggregateResponseTimeNanos = new AggregateMetric();
+
+            _instance = instance;
+        }
+        return _instance;
+    }
+
+    @Override
     public synchronized void updateMetric(WebMetric metric) {
         WebMetric old = _metrics.get(metric.getId());
         Long oldRequestTimeNanos = null == old ? null : old.getRequestTimeNanos();
@@ -29,8 +40,18 @@ public class InMemoryMetricsService implements MetricsService {
         WebMetric metricCopy = new WebMetric(metric);
         _metrics.put(metric.getId(), metricCopy);
 
-        _aggregateResponseTimeNanos.applyMetricValue(oldRequestTimeNanos, metric.getRequestTimeNanos());
-        _aggregateResponseSizeBytes.applyMetricValue(oldResponseByteCount, metric.getResponseByteCount());
+        _aggregateResponseTimeNanos.applyMetricValue(oldRequestTimeNanos, metricCopy.getRequestTimeNanos());
+        _aggregateResponseSizeBytes.applyMetricValue(oldResponseByteCount, metricCopy.getResponseByteCount());
+    }
+
+    @Override
+    public AggregateMetric getAggregateResponseSizeBytes() {
+        return _aggregateResponseSizeBytes;
+    }
+
+    @Override
+    public AggregateMetric getAggregateResponseTimeNanos() {
+        return _aggregateResponseTimeNanos;
     }
 
     @Override

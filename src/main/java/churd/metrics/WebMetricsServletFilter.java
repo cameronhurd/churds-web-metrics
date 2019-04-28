@@ -27,7 +27,7 @@ public class WebMetricsServletFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         _log.info("Init web filter");
-        _metricsService = new InMemoryMetricsService();
+        _metricsService = InMemoryMetricsService.getInstance();
     }
 
     @Override
