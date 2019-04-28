@@ -20,9 +20,13 @@ import java.util.UUID;
 @WebFilter(filterName = "WebMetricsServletFilter", urlPatterns = {"/*"})
 public class WebMetricsServletFilter implements Filter {
 
+    // TODO: could move update metric outsie of metricsService.
+    //      and create api package?  config package too
+
+
     private static final Logger _log = LogManager.getLogger(WebMetricsServletFilter.class);
 
-    private static final String METRICS_ID = "churds-metrics-id";
+    public static final String METRICS_ID = "churds-metrics-id";
 
     private MetricsService _metricsService;
 
@@ -58,6 +62,10 @@ public class WebMetricsServletFilter implements Filter {
 
     @Override
     public void destroy() {
+    }
+
+    protected void setMetricsService(MetricsService metricsService) {
+        _metricsService = metricsService;
     }
 }
 

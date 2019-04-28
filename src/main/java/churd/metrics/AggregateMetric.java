@@ -29,11 +29,13 @@ public class AggregateMetric {
         }
         _average = _totalNanos / _count;
 
-        if (null == _max || newValue > _max) {
-            _max = newValue;
-        }
-        if (null == _min || newValue < _min) {
-            _min = newValue;
+        if (null != newValue) {
+            if (null == _max || newValue > _max) {
+                _max = newValue;
+            }
+            if (null == _min || newValue < _min) {
+                _min = newValue;
+            }
         }
     }
 
