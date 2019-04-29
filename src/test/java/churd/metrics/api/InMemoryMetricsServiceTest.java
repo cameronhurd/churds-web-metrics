@@ -1,5 +1,9 @@
-package churd.metrics;
+package churd.metrics.api;
 
+import churd.metrics.api.AggregateMetric;
+import churd.metrics.api.InMemoryMetricsService;
+import churd.metrics.api.MetricsService;
+import churd.metrics.api.WebMetric;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

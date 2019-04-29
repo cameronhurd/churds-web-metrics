@@ -1,5 +1,8 @@
-package churd.metrics;
+package churd.metrics.filter;
 
+import churd.metrics.ResponseWrapper;
+import churd.metrics.api.InMemoryMetricsService;
+import churd.metrics.api.MetricsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,10 +22,6 @@ import java.util.UUID;
  */
 @WebFilter(filterName = "WebMetricsServletFilter", urlPatterns = {"/*"})
 public class WebMetricsServletFilter implements Filter {
-
-    // TODO: could move update metric outsie of metricsService.
-    //      and create api package?  config package too
-
 
     private static final Logger _log = LogManager.getLogger(WebMetricsServletFilter.class);
 

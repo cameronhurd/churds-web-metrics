@@ -1,4 +1,4 @@
-package churd.metrics;
+package churd.metrics.api;
 
 /**
  * Service that provides access to Web Metrics

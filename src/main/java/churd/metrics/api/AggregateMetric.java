@@ -1,4 +1,4 @@
-package churd.metrics;
+package churd.metrics.api;
 
 /**
  * Tracks aggregate metrics like min, max, average.

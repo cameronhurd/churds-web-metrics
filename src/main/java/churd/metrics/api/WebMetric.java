@@ -1,4 +1,4 @@
-package churd.metrics;
+package churd.metrics.api;
 
 /**
  * Tracks metrics for a HTTP request/response

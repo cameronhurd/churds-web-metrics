@@ -1,5 +1,6 @@
 package churd.metrics;
 
+import churd.metrics.api.MetricsService;
 import org.apache.commons.io.output.CountingOutputStream;
 
 import javax.servlet.ServletOutputStream;

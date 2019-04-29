@@ -1,5 +1,6 @@
-package churd.metrics;
+package churd.metrics.api;
 
+import churd.metrics.api.AggregateMetric;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +39,10 @@ public class AggregateMetricTest {
     @Test
     @DisplayName("Non-null oldValue applies difference to average")
     public void testApplyMetricDifferenceToAverage() {
-        // TODO:
+        AggregateMetric aggregateMetric = new AggregateMetric();
+        aggregateMetric.applyMetricValue(null, 10L);
+        aggregateMetric.applyMetricValue(10L, 20L);
+        assertEquals(Long.valueOf(20L), aggregateMetric.getAverage());
     }
 
     @Test
