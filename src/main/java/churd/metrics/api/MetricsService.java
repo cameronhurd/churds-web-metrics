@@ -10,6 +10,7 @@ public interface MetricsService {
      *
      * @param metricId
      * @param nanos - response time nano seconds
+     * @throws IllegalStateException if response time is already set for the given metric ID
      */
     void setResponseTimeMetric(String metricId, long nanos);
 
@@ -17,9 +18,9 @@ public interface MetricsService {
      * Update response size for the provided metric ID.
      *
      * @param metricId
-     * @param bytesToAdd - response bytes
+     * @param responseSizeBytes
      */
-    void updateResponseSizeMetric(String metricId, long bytesToAdd);
+    void updateResponseSizeMetric(String metricId, long responseSizeBytes);
 
     /**
      * Retrieves current aggregate response times in nanoseconds.

@@ -37,6 +37,9 @@ public class InMemoryMetricsService implements MetricsService {
     @Override
     public synchronized void setResponseTimeMetric(String metricId, long nanos) {
         WebMetric old = _metrics.get(metricId);
+        if (old != null && null != old.getRequestTimeNanos()) {
+            throw new IllegalStateException("Response request time already set for metric ID: " + metricId);
+        }
 
         _log.info("update response time metric id: {}, nanos {}", metricId, nanos);
         WebMetric metric = null == old ? new WebMetric(metricId) : old;
@@ -49,13 +52,13 @@ public class InMemoryMetricsService implements MetricsService {
     }
 
     @Override
-    public synchronized void updateResponseSizeMetric(String metricId, long bytesToAdd) {
+    public synchronized void updateResponseSizeMetric(String metricId, long responseSizeBytes) {
         WebMetric old = _metrics.get(metricId);
         Long oldResponseByteCount = null == old ? null : old.getResponseByteCount();
 
-        _log.info("add bytes metric ID: {}, bytes {}", metricId, bytesToAdd);
+        _log.info("add bytes metric ID: {}, bytes {}", metricId, responseSizeBytes);
         WebMetric metric = null == old ? new WebMetric(metricId) : old;
-        metric.setResponseByteCount(bytesToAdd);
+        metric.setResponseByteCount(responseSizeBytes);
         if (old == null) {
             _metrics.put(metricId, metric);
         }

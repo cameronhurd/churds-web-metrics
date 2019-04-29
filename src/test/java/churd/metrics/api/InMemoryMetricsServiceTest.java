@@ -1,26 +1,33 @@
 package churd.metrics.api;
 
-import churd.metrics.api.AggregateMetric;
-import churd.metrics.api.InMemoryMetricsService;
-import churd.metrics.api.MetricsService;
-import churd.metrics.api.WebMetric;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class InMemoryMetricsServiceTest {
 
     private final MetricsService _metricsService = InMemoryMetricsService.getInstance();
 
     @Test
-    @DisplayName("Test add response time metric")
-    public void testUpdateMetricResponseTimeNew() {
+    @DisplayName("Test set response time metric")
+    public void testSetMetricResponseTime() {
         InMemoryMetricsService.clearMetrics();
         String metricId = "addT1";
         _metricsService.setResponseTimeMetric(metricId, 20L);
         WebMetric retrieved = _metricsService.getWebMetricById(metricId);
         assertEquals(Long.valueOf(20), retrieved.getRequestTimeNanos());
+    }
+
+    @Test
+    @DisplayName("Exception thrown if saving reponse time and it is metric already set")
+    public void testSetMetricResponseTimeWhenAlreadySet() {
+        InMemoryMetricsService.clearMetrics();
+        String metricId = "addT1";
+        _metricsService.setResponseTimeMetric(metricId, 20L);
+        assertThrows(IllegalStateException.class,
+                () -> _metricsService.setResponseTimeMetric(metricId, 20L));
     }
 
     @Test
