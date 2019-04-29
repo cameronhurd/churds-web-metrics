@@ -5,7 +5,7 @@
 A simple web metric library built for the contrast security Java Instrumentation Engineer Project
 
 # How to use this library to track metrics
-## Add the dependency
+## Add the dependency (maven)
 ```
 <repositories>
   <repository>
