@@ -25,4 +25,4 @@ If your using spring boot add this to your application config:
 ```
 @ServletComponentScan(basePackages = {"churd.metrics.filter"})
 ```
-Otherwise you can add churd.metrics.filter.WebMetricsServletFilter in web.xml (it is a standard javax.servlet.Filter).
+Otherwise you can add churd.metrics.filter.WebMetricsServletFilter as a filter-class in web.xml (it is a standard javax.servlet.Filter).
