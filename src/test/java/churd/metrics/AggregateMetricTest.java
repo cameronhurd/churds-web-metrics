@@ -14,7 +14,7 @@ public class AggregateMetricTest {
         AggregateMetric aggregateMetric = new AggregateMetric();
         aggregateMetric.applyMetricValue(null, 10L);
         aggregateMetric.applyMetricValue(null, null);
-        assertEquals(10, aggregateMetric.getAverage());
+        assertEquals(Long.valueOf(10), aggregateMetric.getAverage());
     }
 
     @Test
@@ -23,7 +23,7 @@ public class AggregateMetricTest {
         AggregateMetric aggregateMetric = new AggregateMetric();
         aggregateMetric.applyMetricValue(null, 10L);
         aggregateMetric.applyMetricValue(null, 20L);
-        assertEquals(15, aggregateMetric.getAverage());
+        assertEquals(Long.valueOf(15), aggregateMetric.getAverage());
     }
 
     @Test
@@ -47,7 +47,7 @@ public class AggregateMetricTest {
         AggregateMetric aggregateMetric = new AggregateMetric();
         aggregateMetric.applyMetricValue(null, 10L);
         aggregateMetric.applyMetricValue(10L, 20L);
-        assertEquals(20, aggregateMetric.getMax());
+        assertEquals(Long.valueOf(20), aggregateMetric.getMax());
     }
 
     @Test
@@ -56,6 +56,6 @@ public class AggregateMetricTest {
         AggregateMetric aggregateMetric = new AggregateMetric();
         aggregateMetric.applyMetricValue(null, 10L);
         aggregateMetric.applyMetricValue(10L, 20L);
-        assertEquals(10, aggregateMetric.getMin());
+        assertEquals(Long.valueOf(10), aggregateMetric.getMin());
     }
 }

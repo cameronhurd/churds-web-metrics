@@ -6,11 +6,20 @@ package churd.metrics;
 public interface MetricsService {
 
     /**
-     * Add or update a WebMetric
+     * Set the response time for a given metric ID.
      *
-     * @param metric
+     * @param metricId
+     * @param nanos - response time nano seconds
      */
-    void updateMetric(WebMetric metric);
+    void setResponseTimeMetric(String metricId, long nanos);
+
+    /**
+     * Update response size for the provided metric ID.
+     *
+     * @param metricId
+     * @param bytesToAdd - response bytes
+     */
+    void updateResponseSizeMetric(String metricId, long bytesToAdd);
 
     /**
      * Retrieves current aggregate response times in nanoseconds.

@@ -7,21 +7,9 @@ public class WebMetric {
     private final String _id;
     private Long _responseByteCount;
     private Long _requestTimeNanos;
-    private Long _startTimeNanos;
 
     public WebMetric(String id) {
         _id = id;
-    }
-
-    public WebMetric(WebMetric metric) {
-        _id = metric.getId();
-        _responseByteCount = metric.getResponseByteCount();
-        _requestTimeNanos = metric.getRequestTimeNanos();
-        _startTimeNanos = metric.getStartTimeNanos();
-    }
-
-    public Long getStartTimeNanos() {
-        return _startTimeNanos;
     }
 
     public String getId() {
@@ -40,12 +28,8 @@ public class WebMetric {
         _responseByteCount = responseByteCount;
     }
 
-    public void startTimer() {
-        _startTimeNanos = System.nanoTime();
-    }
-
-    public void endTimer() {
-        _requestTimeNanos = System.nanoTime() - _startTimeNanos;
+    public void setRequestTimeNanos(Long requestTimeNanos) {
+        _requestTimeNanos = requestTimeNanos;
     }
 
     @Override

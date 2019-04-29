@@ -12,7 +12,7 @@ public class InMemoryMetricsService implements MetricsService {
 
     private static final Logger _log = LogManager.getLogger(InMemoryMetricsService.class);
 
-    private static MetricsService _instance;
+    private static InMemoryMetricsService _instance;
 
     private HashMap<String, WebMetric> _metrics;
     private AggregateMetric _aggregateResponseTimeNanos;
@@ -23,12 +23,8 @@ public class InMemoryMetricsService implements MetricsService {
 
     public static MetricsService getInstance() {
         if (null == _instance) {
-            InMemoryMetricsService instance = new InMemoryMetricsService();
-            instance._metrics = new HashMap<>();
-            instance._aggregateResponseSizeBytes = new AggregateMetric();
-            instance._aggregateResponseTimeNanos = new AggregateMetric();
-
-            _instance = instance;
+            _instance = new InMemoryMetricsService();
+            clearMetrics();
         }
         return _instance;
     }
@@ -39,17 +35,32 @@ public class InMemoryMetricsService implements MetricsService {
     }
 
     @Override
-    public synchronized void updateMetric(WebMetric metric) {
-        WebMetric old = _metrics.get(metric.getId());
-        Long oldRequestTimeNanos = null == old ? null : old.getRequestTimeNanos();
+    public synchronized void setResponseTimeMetric(String metricId, long nanos) {
+        WebMetric old = _metrics.get(metricId);
+
+        _log.info("update response time: {}, {}", metricId, nanos);
+        WebMetric metric = null == old ? new WebMetric(metricId) : old;
+        metric.setRequestTimeNanos(nanos);
+        if (old == null) {
+            _metrics.put(metricId, metric);
+        }
+
+        _aggregateResponseTimeNanos.applyMetricValue(null, metric.getRequestTimeNanos());
+    }
+
+    @Override
+    public synchronized void updateResponseSizeMetric(String metricId, long bytesToAdd) {
+        WebMetric old = _metrics.get(metricId);
         Long oldResponseByteCount = null == old ? null : old.getResponseByteCount();
 
-        _log.info("update metric: {}", metric);
-        WebMetric metricCopy = new WebMetric(metric);
-        _metrics.put(metric.getId(), metricCopy);
+        _log.info("add bytes: {}, {}", metricId, bytesToAdd);
+        WebMetric metric = null == old ? new WebMetric(metricId) : old;
+        metric.setResponseByteCount(bytesToAdd);
+        if (old == null) {
+            _metrics.put(metricId, metric);
+        }
 
-        _aggregateResponseTimeNanos.applyMetricValue(oldRequestTimeNanos, metricCopy.getRequestTimeNanos());
-        _aggregateResponseSizeBytes.applyMetricValue(oldResponseByteCount, metricCopy.getResponseByteCount());
+        _aggregateResponseSizeBytes.applyMetricValue(oldResponseByteCount, metric.getResponseByteCount());
     }
 
     @Override
@@ -60,6 +71,15 @@ public class InMemoryMetricsService implements MetricsService {
     @Override
     public AggregateMetric getAggregateResponseTimeNanos() {
         return _aggregateResponseTimeNanos;
+    }
+
+    /**
+     * Clear all metrics that are in the in memory store
+     */
+    public static void clearMetrics() {
+        _instance._metrics = new HashMap<>();
+        _instance._aggregateResponseSizeBytes = new AggregateMetric();
+        _instance._aggregateResponseTimeNanos = new AggregateMetric();
     }
 
     @Override

@@ -42,18 +42,18 @@ public class WebMetricsServletFilter implements Filter {
 
         _log.info("Request start");
         if (response instanceof HttpServletResponse) {
-            WebMetric metric = new WebMetric(UUID.randomUUID().toString());
-            metric.startTimer();
-            ResponseWrapper responseWrapper = new ResponseWrapper((HttpServletResponse) response, _metricsService, metric);
+            String metricId = UUID.randomUUID().toString();
+            long startTimeNanos = System.nanoTime();
+            ResponseWrapper responseWrapper = new ResponseWrapper((HttpServletResponse) response, _metricsService, metricId);
 
-            responseWrapper.addHeader(METRICS_ID, metric.getId());
-            _log.info("doFilter requst - metrics-id: {}", metric.getId());
+            responseWrapper.addHeader(METRICS_ID, metricId);
+            _log.info("doFilter requst - metrics-id: {}", metricId);
 
             _log.info("call doFilter");
             filterChain.doFilter(request, responseWrapper);
 
-            metric.endTimer();
-            _metricsService.updateMetric(metric);
+            long requestTimeNanos = System.nanoTime() - startTimeNanos;
+            _metricsService.setResponseTimeMetric(metricId, requestTimeNanos);
         }
         else {
             filterChain.doFilter(request, response);

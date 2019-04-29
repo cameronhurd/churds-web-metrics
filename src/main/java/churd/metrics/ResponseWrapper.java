@@ -17,12 +17,12 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
     private CountingOutputStream _countingOutputStream;
     private ServletOutputStream _servletOutputStream;
     private MetricsService _metricsService;
-    private WebMetric _webMetric;
+    private String _metricId;
 
-    public ResponseWrapper(HttpServletResponse response, MetricsService metricsService, WebMetric webMetric) {
+    public ResponseWrapper(HttpServletResponse response, MetricsService metricsService, String metricId) {
         super(response);
         _metricsService = metricsService;
-        _webMetric = webMetric;
+        _metricId = metricId;
     }
 
     @Override
@@ -41,8 +41,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
             @Override
             public void flush() throws IOException {
                 super.flush();
-                _webMetric.setResponseByteCount(_countingOutputStream.getByteCount());
-                _metricsService.updateMetric(_webMetric);
+                _metricsService.updateResponseSizeMetric(_metricId, _countingOutputStream.getByteCount());
             }
         };
         return _servletOutputStream;
