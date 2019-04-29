@@ -26,3 +26,7 @@ If your using spring boot add this to your application config:
 @ServletComponentScan(basePackages = {"churd.metrics.filter"})
 ```
 Otherwise you can add churd.metrics.filter.WebMetricsServletFilter as a filter-class in web.xml (it is a standard javax.servlet.Filter).
+
+## Example project
+Check out this example spring boot web application that uses churds-web-metrics. 
+https://github.com/cameronhurd/churds-cafe
