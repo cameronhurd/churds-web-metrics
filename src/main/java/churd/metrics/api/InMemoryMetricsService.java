@@ -38,7 +38,7 @@ public class InMemoryMetricsService implements MetricsService {
     public synchronized void setResponseTimeMetric(String metricId, long nanos) {
         WebMetric old = _metrics.get(metricId);
 
-        _log.info("update response time: {}, {}", metricId, nanos);
+        _log.info("update response time metric id: {}, nanos {}", metricId, nanos);
         WebMetric metric = null == old ? new WebMetric(metricId) : old;
         metric.setRequestTimeNanos(nanos);
         if (old == null) {
@@ -53,7 +53,7 @@ public class InMemoryMetricsService implements MetricsService {
         WebMetric old = _metrics.get(metricId);
         Long oldResponseByteCount = null == old ? null : old.getResponseByteCount();
 
-        _log.info("add bytes: {}, {}", metricId, bytesToAdd);
+        _log.info("add bytes metric ID: {}, bytes {}", metricId, bytesToAdd);
         WebMetric metric = null == old ? new WebMetric(metricId) : old;
         metric.setResponseByteCount(bytesToAdd);
         if (old == null) {

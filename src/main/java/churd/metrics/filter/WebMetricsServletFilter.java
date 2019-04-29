@@ -39,16 +39,14 @@ public class WebMetricsServletFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
 
-        _log.info("Request start");
         if (response instanceof HttpServletResponse) {
             String metricId = UUID.randomUUID().toString();
             long startTimeNanos = System.nanoTime();
             ResponseWrapper responseWrapper = new ResponseWrapper((HttpServletResponse) response, _metricsService, metricId);
 
             responseWrapper.addHeader(METRICS_ID, metricId);
-            _log.info("doFilter requst - metrics-id: {}", metricId);
+            _log.info("doFilter request - metrics-id: {}", metricId);
 
-            _log.info("call doFilter");
             filterChain.doFilter(request, responseWrapper);
 
             long requestTimeNanos = System.nanoTime() - startTimeNanos;
