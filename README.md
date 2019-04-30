@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.com/cameronhurd/churds-web-metrics.svg?branch=master)](https://travis-ci.com/cameronhurd/churds-web-metrics)
 
 # What
-A simple web metric library built for the contrast security Java Instrumentation Engineer Project
+A simple web metric library written in Java
 
 # How to use this library to track metrics
 ## Add the dependency (maven)
